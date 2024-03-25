@@ -1,0 +1,136 @@
+/*
+Código realizado por Jesús Martínez Javier 2203026628
+Universidad Autónoma Metropolitana Unidad Lerma
+UEA: Algoritmos y Estructura de Datos
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definición de la estructura de nodo para la lista enlazada
+typedef struct Molde
+{
+    int dato;
+    struct Molde *siguiente;
+} Nodo;
+
+// Variable global para el inicio de la lista
+Nodo *inicio = NULL;
+
+// Función para insertar un valor en orden en la lista
+void insertar_ordenado(int valor) {
+    Nodo *nuevo, *actual, *anterior;
+
+    nuevo = malloc(sizeof(Nodo));
+    nuevo->dato = valor;
+    nuevo->siguiente = NULL;
+    // Si la lista está vacía o el nuevo valor es menor que el primero
+    if (inicio == NULL || valor < inicio->dato) {
+        nuevo->siguiente = inicio;
+        inicio = nuevo;
+    } else {
+        anterior = inicio;
+        actual = inicio->siguiente;
+
+        // Avanzar en la lista hasta encontrar el lugar correcto para insertar el nuevo nodo
+        while (actual != NULL && actual->dato < valor) {
+            anterior = actual;
+            actual = actual->siguiente;
+        }
+
+        // Insertar el nuevo nodo entre 'anterior' y 'actual'
+        anterior->siguiente = nuevo;
+        nuevo->siguiente = actual;
+    }
+}
+// Función para recorrer la lista y devolver su longitud
+int recorrer() {
+    Nodo *aux = inicio;
+    int longitud = 0;
+
+    printf("\nInicio del recorrido:\n");
+    if (aux != NULL) {
+        while (aux->siguiente != NULL) {
+            printf("%d ", aux->dato);
+            aux = aux->siguiente;
+            longitud++;
+        }
+        longitud++;
+        printf("%d ", aux->dato);
+    }
+
+    return longitud;
+}
+// Función para buscar un valor en la lista y devolver su posición, o -1 si no se encuentra
+int buscaDato(int valor) {
+    Nodo *aux = inicio;
+    int posicion = 1;
+
+    printf("\nInicio de la búsqueda: \n");
+    while ((aux != NULL) && (aux->dato != valor)) {
+        aux = aux->siguiente;
+        posicion++;
+    };
+    if (aux != NULL)
+        return posicion;
+    else
+        return -1;
+}
+// Función para buscar y devolver el nodo en una posición específica
+Nodo *buscaNodo(int pos) {
+    int i = 1;
+    Nodo *aux = inicio;
+    while (i<pos && aux!=NULL) {
+        aux = aux->siguiente;
+        i++;
+    }
+    return aux;
+}
+
+// Función para realizar un recorrido recursivo de la lista
+void visita(Nodo *actual) {
+    if (actual != NULL) {
+        printf("%d ", actual->dato);
+        if (actual->siguiente != NULL)
+            visita(actual->siguiente);
+    };
+}
+
+// Función para eliminar un nodo de la lista
+void eliminar() {
+    int val, pos;
+    Nodo *objetivo, *previo;
+    printf("\n¿Qué valor deseas eliminar?: ");
+    scanf("%d", &val);
+    pos = buscaDato(val);
+    objetivo = buscaNodo(pos);
+    if (pos == 1)
+        inicio = objetivo->siguiente;
+    else {
+        previo = buscaNodo(pos-1);
+        previo->siguiente = objetivo->siguiente;
+    }
+    free(objetivo);
+}
+
+// Función principal
+int main() {
+    Nodo *aux;
+    // Insertar algunos valores en orden en la lista
+    insertar_ordenado(1);
+    insertar_ordenado(2);
+    insertar_ordenado(5);
+    insertar_ordenado(7);
+    // Realizar algunas operaciones sobre la lista
+    visita(inicio);
+    printf("\nLa lista tiene una longitud %d", recorrer());
+    printf ("\nEl valor 5 está en la posición: %d", buscaDato(5));
+    aux = buscaNodo(2);
+    if (aux != NULL)
+        printf ("\nEl valor en la posición 2 es: %d", aux->dato);
+   
+    // Eliminar un nodo de la lista
+    eliminar();
+    visita(inicio);
+    return 0;
+}
