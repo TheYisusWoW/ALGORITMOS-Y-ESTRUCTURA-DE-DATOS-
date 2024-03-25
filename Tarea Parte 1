@@ -1,0 +1,30 @@
+/*
+Código realizado por Jesús Martinez Javier 2203026628.
+*/ 
+
+#include <stdio.h>   //Incluimos librerias como printf.
+int potencia(int base, int exponente);    // Declaramos la función potencia.
+
+
+int main() {
+    int num_base, num_exp;
+    for (num_base = 2; num_base <= 4; num_base++) {   //Bucle para repetir  la base de los números del 2 al 4.
+        for (num_exp = 3; num_exp >= 0; num_exp--) {  //Bucle para repetir los exponentes del 3 al 0.
+            printf("%4d", potencia(num_base, num_exp));   //imprimos la potencia de la base del numero.
+        }
+        printf("\n");   //salto de linea para que nos de un formato de 4*3.
+    }
+    return 0;
+}
+
+int potencia(int base, int exponente) 
+{
+    int resultado, contador;
+    resultado = 1;
+    if (exponente > 0)    //si el exponente es mayor que 0
+       for (contador = 1; contador <= exponente; contador++)  //Bucle  para repetir el contador que va de 1 hasta el exponente que es 3.
+            resultado = resultado*base;   //devuelve el resultado de la potencia.
+    return resultado;
+}
+
+
